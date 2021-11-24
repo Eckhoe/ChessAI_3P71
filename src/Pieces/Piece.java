@@ -4,13 +4,13 @@ public abstract class Piece {
 	int xPos;
 	int yPos;
 	int rank;
-	boolean isWhite;
+	char type;
 
-	public Piece(int xPos, int yPos, int rank, boolean isWhite) {
+	public Piece(int xPos, int yPos, int rank, char type) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rank = rank;
-		this.isWhite = isWhite;
+		this.type = type;
 	}
 
 	public int[] getCoords() {
@@ -23,11 +23,11 @@ public abstract class Piece {
 		yPos = y;
 	}
 
-	public boolean checkIfWhite(){
-		return isWhite;
-	}
-
 	public int getRank(){
 		return rank;
+	}
+
+	public char getType(){
+		return type;
 	}
 }
