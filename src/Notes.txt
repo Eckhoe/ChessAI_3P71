@@ -1,0 +1,24 @@
+Implemented:
+1.Board and Board creation/initialization
+2.Pieces (minus movement)
+
+Need to implement:
+1.Movement of pieces
+2.General game logic
+3.Game tree
+4.A-B pruning
+
+
+Movement:
+1.User to input what piece they want to move base on a coordinate (called c1)
+2.User then inputs the coordinate for where they want to move the piece (called c2)
+3.If move can be made, the piece from c1 will replace/delete the piece at the coordinate c2
+4.Movement to pass the current board state(Pieces array) into a method to check for possible moves available
+
+Misc.
+1.Piece color is defined based on the capitalization of the pieces letter
+
+Player Info:
+1.Player 1 Inputs (Is AI player 1??)
+2.Displays
+3.Player 2 Inputs

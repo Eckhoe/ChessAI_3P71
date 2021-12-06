@@ -2,11 +2,45 @@ package main;
 
 import Pieces.*;
 
+import java.util.Scanner;
+
 public class Chess {
-    Piece[][] board = new Piece[8][8];
+    Scanner sc = new Scanner(System.in);
+    int gameType = 0;
+    int xPosInput;//xPos in which the piece is on board
+    int yPosInput;//yPos i which the piece is on board
+    int xPosMove;//xPos where you want to move piece
+    int yPosMove;//yPos where you want to move piece
+    Piece[][] board = new Piece[8][8];//board declaration
 
     private Chess() {
+//        while(gameType != 1 || gameType != 2) {
+//            System.out.println("PvP [1] or PvAI [2]: ");
+//            gameType = sc.nextInt();
+//            if(gameType != 1 || gameType != 2)
+//                System.out.println("INCORRECT INPUT");
+//        }
         buildBoard();
+        printBoard();
+//        switch (gameType){
+//            case 1:// PvP
+//                break;
+//            case 2:// PvAI
+//                break;
+//        }
+
+
+
+    }
+
+
+    private void startGame(){
+
+    }
+
+    //will check to see if game is won
+    private boolean checkGame(){
+        return false;
     }
 
     private void buildBoard() {
@@ -39,6 +73,16 @@ public class Chess {
         board[7][7] = new Rook(7, 7, 10, 'r');
     }
 
+    private void printBoard(){
+        System.out.println("y/x 0   1   2   3   4   5   6   7");
+        for(int i = 0; i < board.length; i++){
+            System.out.print(i + " | ");
+            for(int j = 0; j < board[i].length; j++){
+                System.out.print(board[i][j].getType() + " | ");
+            }
+            System.out.println();
+        }
+    }
 
     public static void main(String[] args) {
         new Chess();

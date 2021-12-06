@@ -1,6 +1,7 @@
 package Pieces;
 
 public abstract class Piece {
+
 	int xPos;
 	int yPos;
 	int rank;
@@ -14,8 +15,7 @@ public abstract class Piece {
 	}
 
 	public int[] getCoords() {
-		int[] coord = { xPos, yPos };
-		return coord;
+		return new int[]{ xPos, yPos };
 	}
 
 	public void setCoords(int x, int y){
@@ -31,3 +31,5 @@ public abstract class Piece {
 		return type;
 	}
 }
+
+
