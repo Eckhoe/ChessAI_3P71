@@ -1,0 +1,9 @@
+Game Instructions:
+1. User will input number based on if they want PvP(1) or PvAI(2)
+2. In order to make a move on the board, user will input valid x and y positions to determine which piece you intend to move
+3. User will then input a x and y position for where they wish to move that piece which was obtained
+4. A valid move is one that is not the same colour as the piece you want to move and within the rules of the game of chess
+5. Once a valid move is made, the other player will have a chance to make a move of their own (AI or Human pending step one)
+6. Game will be checked to see if player has won after every move and will be checked if no more pieces can be moves (ie stalemate/checkmate)
+
+AI Instructions:

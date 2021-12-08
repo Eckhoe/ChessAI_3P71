@@ -14,6 +14,7 @@ Movement:
 2.User then inputs the coordinate for where they want to move the piece (called c2)
 3.If move can be made, the piece from c1 will replace/delete the piece at the coordinate c2
 4.Movement to pass the current board state(Pieces array) into a method to check for possible moves available
+5.Player that is currently moving cannot move the other players pieces
 
 Misc.
 1.Piece color is defined based on the capitalization of the pieces letter

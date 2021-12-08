@@ -1,10 +1,28 @@
 package Pieces;
 
+import main.Player;
+
+
+//NEED TO IMPLEMENT CASTLING
 public class King extends Piece{
 
-	private boolean castling = false;
+	private boolean castled = false;
 
-	public King(int xPos, int yPos, int rank, char type) {
-		super(xPos, yPos, rank, type);
+	public King(int xPos, int yPos, int rank, char type, boolean isWhite) {
+		super(xPos, yPos, rank, type, isWhite);
+	}
+
+	public boolean makeMove(Player currPlayer, Piece [][] board, int xPos, int yPos, int newXPos, int newYPos){
+		//check colour of the current piece and see if that spot is taken by same colour
+		if(board[newYPos][newXPos].isWhite == this.isWhite && board[newYPos][newXPos].type != '-' || currPlayer.getIsWhite() != this.isWhite)
+			return false;
+
+		int xMove = Math.abs(xPos - newXPos);
+		int yMove = Math.abs(yPos - newYPos);
+
+		//this allows the king to move in one direction each way
+		if(xMove + yMove == 1)
+			return true;
+		return false;
 	}
 }
