@@ -10,6 +10,7 @@ public abstract class Piece {
 	char type;
 	boolean isWhite;
 
+
 	public Piece(int xPos, int yPos, int rank, char type, boolean isWhite) {
 		this.xPos = xPos;
 		this.yPos = yPos;

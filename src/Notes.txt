@@ -1,12 +1,11 @@
 Implemented:
 1.Board and Board creation/initialization
-2.Pieces (minus movement)
+2.Pieces with movement (need castling and en passant)
 
 Need to implement:
-1.Movement of pieces
-2.General game logic
-3.Game tree
-4.A-B pruning
+1.General game logic
+2.Game tree
+3.A-B pruning
 
 
 Movement:
