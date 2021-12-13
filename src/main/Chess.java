@@ -111,42 +111,38 @@ public class Chess {
     }
 
     private void editBoard(Piece currPiece) {
-        board[yPosInput][xPosInput] = new Empty(xPosInput, yPosInput, 0, '-', false);//replaces the spot where the piece left
+        board[yPosInput][xPosInput] = new Empty(0, '-', false);//replaces the spot where the piece left
         board[yPosMove][xPosMove] = currPiece;//replaces whatever was at the position with the new piece
     }
 
     private void buildBoard() {
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = new Empty(j, i, 0, '-', false);
+                board[i][j] = new Empty(0, '-', false);
             }
         }
         for (int i = 0; i < board[0].length; i++) {
-            board[1][i] = new Pawn(i, 1, 1, 'P', false);//creates black pawns
-            board[6][i] = new Pawn(i, 6, 1, 'p', true);//creates white pawns
+            board[1][i] = new Pawn(1, 'P', false);//creates black pawns
+            board[6][i] = new Pawn(1, 'p', true);//creates white pawns
         }
 
-        board[0][0] = new Rook(0, 0, 10, 'R', false);
-        board[0][1] = new Knight(1, 0, 8, 'H', false);
-        board[0][2] = new Bishop(2, 0, 6, 'B', false);
-        board[0][3] = new Queen(3, 0, 25, 'Q', false);
-        board[0][4] = new King(4, 0, Integer.MAX_VALUE, 'K', false);
-        board[0][5] = new Bishop(5, 0, 6, 'B', false);
-        board[0][6] = new Knight(6, 0, 8, 'H', false);
-        board[0][7] = new Rook(7, 0, 10, 'R', false);
+        board[0][0] = new Rook(10, 'R', false);
+        board[0][1] = new Knight(8, 'H', false);
+        board[0][2] = new Bishop(6, 'B', false);
+        board[0][3] = new Queen(25, 'Q', false);
+        board[0][4] = new King(Integer.MAX_VALUE, 'K', false);
+        board[0][5] = new Bishop(6, 'B', false);
+        board[0][6] = new Knight(8, 'H', false);
+        board[0][7] = new Rook(10, 'R', false);
 
-        board[7][0] = new Rook(0, 7, 10, 'r', true);
-        board[7][1] = new Knight(1, 7, 8, 'h', true);
-        board[7][2] = new Bishop(2, 7, 6, 'b', true);
-        board[7][3] = new Queen(3, 7, 25, 'q', true);
-        board[7][4] = new King(4, 7, Integer.MAX_VALUE, 'k', true);
-        board[7][5] = new Bishop(5, 7, 6, 'b', true);
-        board[7][6] = new Knight(6, 7, 8, 'h', true);
-        board[7][7] = new Rook(7, 7, 10, 'r', true);
-
-
-        //this is temp just to check movement of pawn
-        board[2][7] = new Pawn(7, 6, 1, 'p', true);//creates white pawns
+        board[7][0] = new Rook(10, 'r', true);
+        board[7][1] = new Knight(8, 'h', true);
+        board[7][2] = new Bishop(6, 'b', true);
+        board[7][3] = new Queen(25, 'q', true);
+        board[7][4] = new King(Integer.MAX_VALUE, 'k', true);
+        board[7][5] = new Bishop(6, 'b', true);
+        board[7][6] = new Knight(8, 'h', true);
+        board[7][7] = new Rook(10, 'r', true);
     }
 
     private void printBoard() {

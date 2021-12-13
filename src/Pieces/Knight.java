@@ -4,8 +4,8 @@ import main.Player;
 
 public class Knight extends Piece {
 
-	public Knight(int xPos, int yPos, int rank, char type, boolean isWhite) {
-		super(xPos, yPos, rank, type, isWhite);
+	public Knight(int rank, char type, boolean isWhite) {
+		super(rank, type, isWhite);
 	}
 
 	public boolean makeMove(Player currPlayer, Piece [][] board, int xPos, int yPos, int newXPos, int newYPos){

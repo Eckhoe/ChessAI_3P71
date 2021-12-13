@@ -4,8 +4,8 @@ import main.Player;
 
 public class Queen extends Piece{
 
-	public Queen(int xPos, int yPos, int rank, char type, boolean isWhite) {
-		super(xPos, yPos, rank, type, isWhite);
+	public Queen(int rank, char type, boolean isWhite) {
+		super(rank, type, isWhite);
 	}
 
 	public boolean makeMove(Player currPlayer, Piece [][] board, int xPos, int yPos, int newXPos, int newYPos){
@@ -16,15 +16,72 @@ public class Queen extends Piece{
 		int xMove = Math.abs(xPos - newXPos);
 		int yMove = Math.abs(yPos - newYPos);
 
-		if(xMove > 0 && xMove < board.length && yMove == 0)
+		//horizontal movements
+		if(xMove > 0 && xMove < board.length && yMove == 0 && checkHorizontal(xPos, yPos, newXPos, newYPos, board))
 			return true;
 
-		//if rook is moving on the y-axis
-		if(yMove > 0 && yMove < board.length && xMove == 0)
+		//vertical movements
+		if(yMove > 0 && yMove < board.length && xMove == 0 && checkVertical(xPos, yPos, newXPos, newYPos, board))
 			return true;
 
-		if(Math.abs(xMove - yMove) == 0)
+		//diagonal movements
+		if(Math.abs(xMove - yMove) == 0 && checkDiagonal())
 			return true;
+
+		return false;
+	}
+
+	private boolean checkVertical(int xPos, int yPos, int newXPos, int newYPos, Piece [][] board){
+		int xDist = xPos - newXPos;
+		int yDist = yPos - newYPos;
+
+		//towards the bottom of the array
+		if(yDist < 0) {
+			for (int i = yPos + 1; i < newYPos; i++) {
+				if (board[i][xPos].type != '-' ) {
+					return false;
+				}
+			}
+			return true;
+		}
+		//towards the top of the array
+		else if(yDist > 0) {
+			for (int i = yPos - 1; i > newYPos; i--) {
+				if (board[i][xPos].type != '-') {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkHorizontal(int xPos, int yPos, int newXPos, int newYPos, Piece [][] board){
+		int xDist = xPos - newXPos;
+		int yDist = yPos - newYPos;
+
+		//towards the right of the array
+		if(xDist < 0){
+			for(int i = xPos + 1; i < newXPos; i++){
+				if (board[i][xPos].type != '-') {
+					return false;
+				}
+			}
+			return true;
+		}
+		//towards the left of the array
+		else if(xDist > 0){
+			for(int i = xPos - 1; i > newXPos; i--){
+				if (board[i][xPos].type != '-') {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkDiagonal(){
 
 		return false;
 	}

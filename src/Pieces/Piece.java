@@ -4,28 +4,15 @@ import main.Player;
 
 public abstract class Piece {
 
-	int xPos;
-	int yPos;
 	int rank;
 	char type;
 	boolean isWhite;
 
 
-	public Piece(int xPos, int yPos, int rank, char type, boolean isWhite) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+	public Piece(int rank, char type, boolean isWhite) {
 		this.rank = rank;
 		this.type = type;
 		this.isWhite = isWhite;
-	}
-
-	public int[] getCoords() {
-		return new int[]{ xPos, yPos };
-	}
-
-	public void setCoords(int x, int y){
-		xPos = x;
-		yPos = y;
 	}
 
 	public int getRank(){
