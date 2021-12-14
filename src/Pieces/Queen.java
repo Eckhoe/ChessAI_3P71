@@ -25,7 +25,7 @@ public class Queen extends Piece{
 			return true;
 
 		//diagonal movements
-		if(Math.abs(xMove - yMove) == 0 && checkDiagonal())
+		if(Math.abs(xMove - yMove) == 0 && checkDiagonal(xPos, yPos, newXPos, newYPos, board))
 			return true;
 
 		return false;
@@ -81,8 +81,47 @@ public class Queen extends Piece{
 		return false;
 	}
 
-	private boolean checkDiagonal(){
+	private boolean checkDiagonal(int xPos, int yPos, int newXPos, int newYPos, Piece[][] board){
+		int xDist = xPos - newXPos;
+		int yDist = yPos - newYPos;
 
+		//down to the right
+		if(xDist < 0 && yDist < 0){
+			for(int i = 1; i < Math.abs(xDist); i++){
+				if(board[yPos + i][xPos + i].type != '-'){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		//up to right
+		else if(xDist < 0 && yDist > 0){
+			for(int i = 1; i < Math.abs(xDist); i++){
+				if(board[yPos - i][xPos + i].type != '-'){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		//down to left
+		else if(xDist > 0 && yDist < 0){
+			for(int i = 0; i < Math.abs(xDist); i++){
+				if(board[yPos + i][xPos - i].type != '-'){
+					return false;
+				}
+			}
+			return true;
+		}
+//		//up to left
+		else if(xDist > 0 && yDist > 0){
+			for(int i = 0; i < Math.abs(xDist); i++){
+				if(board[yPos - i][xPos - i].type != '-'){
+					return false;
+				}
+			}
+		}
 		return false;
 	}
 }
