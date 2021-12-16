@@ -68,6 +68,3 @@ public class Bishop extends Piece{
 	}
 }
 
-//if(board[yPos + i][xPos + i].type != '-'){
-//		return false;
-//		}

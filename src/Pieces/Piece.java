@@ -23,6 +23,10 @@ public abstract class Piece {
 		return type;
 	}
 
+	public boolean isWhite(){
+		return isWhite;
+	}
+
 	public abstract boolean makeMove(Player currPlayer, Piece [][] board, int xPos, int yPos, int newXPos, int newYPos);
 }
 

@@ -25,4 +25,12 @@ public class King extends Piece{
 			return true;
 		return false;
 	}
+
+	public boolean inCheck(){
+
+
+		return true;
+	}
+
+
 }

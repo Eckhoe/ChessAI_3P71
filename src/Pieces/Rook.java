@@ -62,7 +62,7 @@ public class Rook extends Piece{
 		//towards the right of the array
 		if(xDist < 0){
 			for(int i = xPos + 1; i < newXPos; i++){
-				if (board[i][xPos].type != '-') {
+				if (board[yPos][i].type != '-') {
 					return false;
 				}
 			}
@@ -71,7 +71,7 @@ public class Rook extends Piece{
 		//towards the left of the array
 		else if(xDist > 0){
 			for(int i = xPos - 1; i > newXPos; i--){
-				if (board[i][xPos].type != '-') {
+				if (board[yPos][i].type != '-') {
 					return false;
 				}
 			}

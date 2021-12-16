@@ -2,6 +2,7 @@ package main;
 
 import Pieces.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -14,6 +15,8 @@ public class Chess {
     Scanner sc = new Scanner(System.in);
     Player playerOne = new Player(1, true);
     Player playerTwo = new Player(2, false);
+    int [] playerOneKingCoordinate = new int[2];
+    int [] playerTwoKingCoordinate = new int[2];
     int gameType = 0;
     int xPosInput = Integer.MAX_VALUE;//xPos in which the piece is on board
     int yPosInput = Integer.MAX_VALUE;//yPos i which the piece is on board
@@ -61,15 +64,61 @@ public class Chess {
         }
     }
 
-
-    private void startGame() {
+    //will check to see if game is won
+    private void checkGame() {
+        //check game and print which player won and end game
 
     }
 
-    //will check to see if game is won
-    private int checkGame() {
-        //check game and print which player won and end game
-        return 0;
+    private void checkGame(Player currPlayer, int[] currKingCoordinates){
+        ArrayList<Character> possibleMoves = new ArrayList<>();
+        ArrayList<int[]> possibleMovesCoordinates = new ArrayList<>();
+        Piece currPiece;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                currPiece = board[i][j];
+                if(currPlayer.getIsWhite() == currPiece.isWhite() && currPiece.getType() != '-'){
+                    //check to see if the piece can be moved
+                    if(currPiece.makeMove(currPlayer,board,j, i, currKingCoordinates[0], currKingCoordinates[1]))
+                        possibleMoves.add(currPiece.getType());
+                }
+
+                 //if move cant be made that that piece is not checking the king and do not at to list
+            }
+        }
+
+    }
+
+
+    //checks  to see if we promote a pawn
+    private Piece checkForPromotion(Piece currPiece, Player currPlayer) {
+        if (currPiece.getClass() == Pawn.class)
+            if (currPlayer.playerNumber == 1 && yPosMove == 0) {
+                System.out.println("What would you like to promote too:");
+                System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
+                int promotion = sc.nextInt();
+                if (promotion == 1)
+                    return new Queen(25, 'q', true);
+                else if (promotion == 2)
+                    return new Rook(10, 'r', true);
+                else if (promotion == 3)
+                    return new Knight(8, 'h', true);
+                else if (promotion == 4)
+                    return new Bishop(6, 'b', true);
+            }
+        else if (currPlayer.playerNumber == 2 && yPosMove == 7);
+                System.out.println("What would you like to promote too:");
+                System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
+                int promotion = sc.nextInt();
+                    if (promotion == 1)
+                        return new Queen(25, 'Q', false);
+                    else if (promotion == 2)
+                        return new Rook(10, 'R', false);
+                    else if (promotion == 3)
+                        return new Knight(8, 'H', false);
+                    else if (promotion == 4)
+                        return new Bishop(6, 'B', false);
+        return currPiece;
     }
 
     private void movePiece(Player currPlayer) {
@@ -80,7 +129,7 @@ public class Chess {
             currPiece = board[yPosInput][xPosInput];
             getMove();
             if (currPiece.makeMove(currPlayer, board, xPosInput, yPosInput, xPosMove, yPosMove)) {
-                editBoard(currPiece);
+                editBoard(currPiece, currPlayer);
                 break;
             } else
                 System.out.println("MOVE CANNOT BE MADE, RE-INPUT WHICH PIECE YOU WANT TO MOVE AND THE PLACE YOU WANT TO MOVE");
@@ -110,9 +159,19 @@ public class Chess {
         while (xPosMove < 0 || xPosMove > board.length || yPosMove < 0 || yPosMove > board.length);
     }
 
-    private void editBoard(Piece currPiece) {
+    private void editBoard(Piece currPiece, Player currPlayer) {
+        if(currPiece.getClass() == King.class)
+            if(currPlayer.playerNumber == 1) {
+                playerOneKingCoordinate[0] = xPosMove;
+                playerOneKingCoordinate[1] = yPosMove;
+            }
+            else if(currPlayer.playerNumber == 2){
+                playerTwoKingCoordinate[0] = xPosMove;
+                playerTwoKingCoordinate[1] = yPosMove;
+            }
         board[yPosInput][xPosInput] = new Empty(0, '-', false);//replaces the spot where the piece left
         board[yPosMove][xPosMove] = currPiece;//replaces whatever was at the position with the new piece
+        board[yPosMove][xPosMove] = checkForPromotion(currPiece, currPlayer);
     }
 
     private void buildBoard() {
@@ -143,6 +202,12 @@ public class Chess {
         board[7][5] = new Bishop(6, 'b', true);
         board[7][6] = new Knight(8, 'h', true);
         board[7][7] = new Rook(10, 'r', true);
+
+        playerOneKingCoordinate[0] = 4;
+        playerOneKingCoordinate[1] = 7;
+
+        playerTwoKingCoordinate[0] = 4;
+        playerTwoKingCoordinate[1] = 0;
     }
 
     private void printBoard() {
