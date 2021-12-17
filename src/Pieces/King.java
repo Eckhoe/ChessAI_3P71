@@ -2,11 +2,7 @@ package Pieces;
 
 import main.Player;
 
-
-//NEED TO IMPLEMENT CASTLING
 public class King extends Piece{
-
-	private boolean castled = false;
 
 	public King(int rank, char type, boolean isWhite) {
 		super(rank, type, isWhite);
@@ -25,12 +21,4 @@ public class King extends Piece{
 			return true;
 		return false;
 	}
-
-	public boolean inCheck(){
-
-
-		return true;
-	}
-
-
 }

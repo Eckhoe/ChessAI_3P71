@@ -32,24 +32,29 @@ public class Chess {
             if (gameType != 1 && gameType != 2)
                 System.out.println(gameType + " IS NOT VALID INPUT");
         } while (gameType != 1 && gameType != 2);
-        build2();
+        buildBoard();
 
         switch (gameType) {
             case 1:// PvP
                 System.out.println("YOU CHOSE PvP!");
-                int gameCheck;
                 printBoard();
                 while (true) {
                     movePiece(playerOne);
                     printBoard();
-                    checkGame(playerTwo, playerOne,playerTwoKingCoordinate);
+                    checkGame(playerTwo, playerOne, playerTwoKingCoordinate);
+                    if (gameWon) {
+                        System.out.println("Player 1 Wins");
+                        break;
+                    }
                     movePiece(playerTwo);
                     printBoard();
                     checkGame(playerOne, playerTwo, playerOneKingCoordinate);
-                    //checks game
-
+                    if (gameWon) {
+                        System.out.println("Player 2 Wins");
+                        break;
+                    }
                 }
-
+                break;
             case 2:// PvAI
                 System.out.println("YOU CHOSE PvAI!");
                 break;
@@ -57,23 +62,21 @@ public class Chess {
     }
 
     private void checkGame(Player currPlayer, Player opponent, int[] currKingCoordinates) {
-        int checkCounter = 0;
-        Piece currPiece;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                currPiece = board[i][j];
-                //System.out.println(currPiece.makeMove(currPlayer, board, j, i, currKingCoordinates[0], currKingCoordinates[1]));
-                 if(currPiece.getType() != '-' & currPiece.makeMove(opponent,board,j,i,currKingCoordinates[0], currKingCoordinates[1])){
-                    checkCounter++;
-                     System.out.println("INSIDE");
-                 }
+        if (board[currKingCoordinates[1]][currKingCoordinates[0]].getClass() != King.class) {
+            gameWon = true;
+        } else {
+            int checkCounter = boardChecker(currPlayer, opponent, currKingCoordinates);
+            if(checkCounter > 0) {
+                System.out.println("Player " + currPlayer.playerNumber + " is currently checked by " + checkCounter + " pieces.");
+                System.out.println(canKingMove(currPlayer, opponent, currKingCoordinates));
+                if (canKingMove(currPlayer, opponent, currKingCoordinates) == 0) {
+                    System.out.println("Player " + currPlayer.playerNumber + " is able to not be checked on the board if moves to proper spot");
+                }
+                else
+                    gameWon = true;
             }
-
         }
-        if (checkCounter > 0)
-            System.out.println("Player " + currPlayer.playerNumber + " is currently checked by " + checkCounter + " pieces. Move your king to avoid losing the game");
     }
-
 
     //checks  to see if we promote a pawn
     private Piece checkForPromotion(Piece currPiece, Player currPlayer) {
@@ -204,37 +207,35 @@ public class Chess {
         }
     }
 
-    private void build2() {
+    private int canKingMove(Player currPlayer, Player opponent, int[] currKingCoordinates) {
+        Piece kingPos = board[currKingCoordinates[1]][currKingCoordinates[0]];
+        int lowestNumber = Integer.MAX_VALUE;
+        int temp;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = new Empty(0, '-', false);
+                if (kingPos.makeMove(currPlayer, board, currKingCoordinates[0], currKingCoordinates[1], j, i)) {
+                    temp =  boardChecker(currPlayer,opponent,currKingCoordinates);
+                    if(temp < lowestNumber)
+                        lowestNumber = temp;
+                }
             }
         }
+        return lowestNumber;
+    }
 
-        for (int i = 0; i < board[0].length; i++) {
-            board[1][i] = new Pawn(1, 'P', false);//creates black pawns
-            board[6][i] = new Pawn(1, 'p', true);//creates white pawns
+    private int boardChecker(Player currPlayer, Player opponent, int[] currKingCoordinates) {
+        int checkCounter = 0;
+        Piece currPiece;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                currPiece = board[i][j];
+                //System.out.println(currPiece.makeMove(currPlayer, board, j, i, currKingCoordinates[0], currKingCoordinates[1]));
+                if (currPiece.getType() != '-' & currPiece.makeMove(opponent, board, j, i, currKingCoordinates[0], currKingCoordinates[1])) {
+                    checkCounter++;
+                }
+            }
         }
-
-        board[6][0] = new Empty(0, '-', false);
-
-        board[0][4] = new King(Integer.MAX_VALUE, 'K', false);
-
-        board[7][0] = new Rook(10, 'r', true);
-        board[7][1] = new Knight(8, 'h', true);
-        board[7][2] = new Bishop(6, 'b', true);
-        board[7][3] = new Queen(25, 'q', true);
-        board[7][4] = new King(Integer.MAX_VALUE, 'k', true);
-        board[7][5] = new Bishop(6, 'b', true);
-        board[7][6] = new Knight(8, 'h', true);
-        board[7][7] = new Rook(10, 'r', true);
-
-        playerOneKingCoordinate[0] = 4;
-        playerOneKingCoordinate[1] = 7;
-
-        playerTwoKingCoordinate[0] = 4;
-        playerTwoKingCoordinate[1] = 0;
-
+        return checkCounter;
     }
 
     public static void main(String[] args) {
