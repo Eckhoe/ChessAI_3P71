@@ -107,7 +107,7 @@ public class Queen extends Piece{
 
 		//down to left
 		else if(xDist > 0 && yDist < 0){
-			for(int i = 0; i < Math.abs(xDist); i++){
+			for(int i = 1; i < Math.abs(xDist); i++){
 				if(board[yPos + i][xPos - i].type != '-'){
 					return false;
 				}
@@ -116,11 +116,12 @@ public class Queen extends Piece{
 		}
 //		//up to left
 		else if(xDist > 0 && yDist > 0){
-			for(int i = 0; i < Math.abs(xDist); i++){
+			for(int i = 1; i < Math.abs(xDist); i++){
 				if(board[yPos - i][xPos - i].type != '-'){
 					return false;
 				}
 			}
+			return true;
 		}
 		return false;
 	}

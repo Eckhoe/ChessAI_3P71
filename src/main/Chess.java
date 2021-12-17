@@ -15,8 +15,8 @@ public class Chess {
     Scanner sc = new Scanner(System.in);
     Player playerOne = new Player(1, true);
     Player playerTwo = new Player(2, false);
-    int [] playerOneKingCoordinate = new int[2];
-    int [] playerTwoKingCoordinate = new int[2];
+    int[] playerOneKingCoordinate = new int[2];
+    int[] playerTwoKingCoordinate = new int[2];
     int gameType = 0;
     int xPosInput = Integer.MAX_VALUE;//xPos in which the piece is on board
     int yPosInput = Integer.MAX_VALUE;//yPos i which the piece is on board
@@ -32,7 +32,7 @@ public class Chess {
             if (gameType != 1 && gameType != 2)
                 System.out.println(gameType + " IS NOT VALID INPUT");
         } while (gameType != 1 && gameType != 2);
-        buildBoard();
+        build2();
 
         switch (gameType) {
             case 1:// PvP
@@ -42,18 +42,10 @@ public class Chess {
                 while (true) {
                     movePiece(playerOne);
                     printBoard();
-//                    gameCheck = checkGame();
-//                    if(gameCheck == 1){
-//                        System.out.println("PLAYER 1 WINS");
-//                        break;
-//                    }
-//                    else if(gameCheck == 2){
-//                        System.out.println("STALEMATE, NO ONE WINS");
-//                        break;
-//                    }
-
+                    checkGame(playerTwo, playerOne,playerTwoKingCoordinate);
                     movePiece(playerTwo);
                     printBoard();
+                    checkGame(playerOne, playerTwo, playerOneKingCoordinate);
                     //checks game
 
                 }
@@ -64,60 +56,52 @@ public class Chess {
         }
     }
 
-    //will check to see if game is won
-    private void checkGame() {
-        //check game and print which player won and end game
-
-    }
-
-    private void checkGame(Player currPlayer, int[] currKingCoordinates){
-        ArrayList<Character> possibleMoves = new ArrayList<>();
-        ArrayList<int[]> possibleMovesCoordinates = new ArrayList<>();
+    private void checkGame(Player currPlayer, Player opponent, int[] currKingCoordinates) {
+        int checkCounter = 0;
         Piece currPiece;
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[i].length; j++){
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
                 currPiece = board[i][j];
-                if(currPlayer.getIsWhite() == currPiece.isWhite() && currPiece.getType() != '-'){
-                    //check to see if the piece can be moved
-                    if(currPiece.makeMove(currPlayer,board,j, i, currKingCoordinates[0], currKingCoordinates[1]))
-                        possibleMoves.add(currPiece.getType());
-                }
-
-                 //if move cant be made that that piece is not checking the king and do not at to list
+                //System.out.println(currPiece.makeMove(currPlayer, board, j, i, currKingCoordinates[0], currKingCoordinates[1]));
+                 if(currPiece.getType() != '-' & currPiece.makeMove(opponent,board,j,i,currKingCoordinates[0], currKingCoordinates[1])){
+                    checkCounter++;
+                     System.out.println("INSIDE");
+                 }
             }
-        }
 
+        }
+        if (checkCounter > 0)
+            System.out.println("Player " + currPlayer.playerNumber + " is currently checked by " + checkCounter + " pieces. Move your king to avoid losing the game");
     }
 
 
     //checks  to see if we promote a pawn
     private Piece checkForPromotion(Piece currPiece, Player currPlayer) {
-        if (currPiece.getClass() == Pawn.class)
-            if (currPlayer.playerNumber == 1 && yPosMove == 0) {
-                System.out.println("What would you like to promote too:");
-                System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
-                int promotion = sc.nextInt();
-                if (promotion == 1)
-                    return new Queen(25, 'q', true);
-                else if (promotion == 2)
-                    return new Rook(10, 'r', true);
-                else if (promotion == 3)
-                    return new Knight(8, 'h', true);
-                else if (promotion == 4)
-                    return new Bishop(6, 'b', true);
-            }
-        else if (currPlayer.playerNumber == 2 && yPosMove == 7);
-                System.out.println("What would you like to promote too:");
-                System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
-                int promotion = sc.nextInt();
-                    if (promotion == 1)
-                        return new Queen(25, 'Q', false);
-                    else if (promotion == 2)
-                        return new Rook(10, 'R', false);
-                    else if (promotion == 3)
-                        return new Knight(8, 'H', false);
-                    else if (promotion == 4)
-                        return new Bishop(6, 'B', false);
+        if (currPlayer.playerNumber == 1 && yPosMove == 0 && currPiece.getType() == 'p') {
+            System.out.println("What would you like to promote too:");
+            System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
+            int promotion = sc.nextInt();
+            if (promotion == 1)
+                return new Queen(25, 'q', true);
+            else if (promotion == 2)
+                return new Rook(10, 'r', true);
+            else if (promotion == 3)
+                return new Knight(8, 'h', true);
+            else if (promotion == 4)
+                return new Bishop(6, 'b', true);
+        } else if (currPlayer.playerNumber == 2 && yPosMove == 7 && currPiece.getType() == 'P') {
+            System.out.println("What would you like to promote too:");
+            System.out.println("[1] Queen, [2] Rook, [3] Knight, [4] Bishop");
+            int promotion = sc.nextInt();
+            if (promotion == 1)
+                return new Queen(25, 'Q', false);
+            else if (promotion == 2)
+                return new Rook(10, 'R', false);
+            else if (promotion == 3)
+                return new Knight(8, 'H', false);
+            else if (promotion == 4)
+                return new Bishop(6, 'B', false);
+        }
         return currPiece;
     }
 
@@ -160,12 +144,11 @@ public class Chess {
     }
 
     private void editBoard(Piece currPiece, Player currPlayer) {
-        if(currPiece.getClass() == King.class)
-            if(currPlayer.playerNumber == 1) {
+        if (currPiece.getClass() == King.class)
+            if (currPlayer.playerNumber == 1) {
                 playerOneKingCoordinate[0] = xPosMove;
                 playerOneKingCoordinate[1] = yPosMove;
-            }
-            else if(currPlayer.playerNumber == 2){
+            } else if (currPlayer.playerNumber == 2) {
                 playerTwoKingCoordinate[0] = xPosMove;
                 playerTwoKingCoordinate[1] = yPosMove;
             }
@@ -219,6 +202,39 @@ public class Chess {
             }
             System.out.println();
         }
+    }
+
+    private void build2() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = new Empty(0, '-', false);
+            }
+        }
+
+        for (int i = 0; i < board[0].length; i++) {
+            board[1][i] = new Pawn(1, 'P', false);//creates black pawns
+            board[6][i] = new Pawn(1, 'p', true);//creates white pawns
+        }
+
+        board[6][0] = new Empty(0, '-', false);
+
+        board[0][4] = new King(Integer.MAX_VALUE, 'K', false);
+
+        board[7][0] = new Rook(10, 'r', true);
+        board[7][1] = new Knight(8, 'h', true);
+        board[7][2] = new Bishop(6, 'b', true);
+        board[7][3] = new Queen(25, 'q', true);
+        board[7][4] = new King(Integer.MAX_VALUE, 'k', true);
+        board[7][5] = new Bishop(6, 'b', true);
+        board[7][6] = new Knight(8, 'h', true);
+        board[7][7] = new Rook(10, 'r', true);
+
+        playerOneKingCoordinate[0] = 4;
+        playerOneKingCoordinate[1] = 7;
+
+        playerTwoKingCoordinate[0] = 4;
+        playerTwoKingCoordinate[1] = 0;
+
     }
 
     public static void main(String[] args) {
