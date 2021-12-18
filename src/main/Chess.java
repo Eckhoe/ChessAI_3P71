@@ -17,13 +17,14 @@ public class Chess {
     Player playerTwo = new Player(2, false);
     int[] playerOneKingCoordinate = new int[2];
     int[] playerTwoKingCoordinate = new int[2];
-    int gameType = 0;
+    int gameType;
     int xPosInput = Integer.MAX_VALUE;//xPos in which the piece is on board
     int yPosInput = Integer.MAX_VALUE;//yPos i which the piece is on board
     int xPosMove = Integer.MAX_VALUE;//xPos where you want to move piece
     int yPosMove = Integer.MAX_VALUE;//yPos where you want to move piece
     Piece[][] board = new Piece[8][8];//board declaration
     boolean gameWon = false;
+    Node root;
 
     private Chess() {
         do {
@@ -57,6 +58,36 @@ public class Chess {
                 break;
             case 2:// PvAI
                 System.out.println("YOU CHOSE PvAI!");
+
+                printBoard();
+                while(true){
+                    System.out.println("AI IS MAKING ITS MOVE");
+                    root = new Node(board, playerOne);
+                    ArrayList<Node> children = root.getChildren();
+                    int value = alphaBeta(1,0,true,Integer.MIN_VALUE,Integer.MAX_VALUE,root);
+                    for(Node c: children){
+                        if(c.getBoardScore() == value){
+                            board = c.getBoard();
+
+                        }
+                    }
+                    printBoard();
+                    checkGame(playerTwo,playerOne,playerTwoKingCoordinate);
+                    if (gameWon) {
+                        System.out.println("AI Wins");
+                        break;
+                    }
+                    movePiece(playerTwo);
+                    printBoard();
+                    checkGame(playerOne, playerTwo, playerOneKingCoordinate);
+                    if (gameWon) {
+                        System.out.println("Player 2 Wins");
+                        break;
+                    }
+                }
+                //really the same as the PvP except we are only taking input from one human this time
+                //move piece takes the integer input from the user for piece to grab and where to move
+
                 break;
         }
     }
@@ -163,12 +194,15 @@ public class Chess {
     private void buildBoard() {
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = new Empty(0, '-', false);
+                if(j == board.length/2){
+                    board[i][j] = new Empty(i + 1, '-', false);
+                }
+                board[i][j] = new Empty(i, '-', false);
             }
         }
         for (int i = 0; i < board[0].length; i++) {
-            board[1][i] = new Pawn(1, 'P', false);//creates black pawns
-            board[6][i] = new Pawn(1, 'p', true);//creates white pawns
+            board[1][i] = new Pawn(3, 'P', false);//creates black pawns
+            board[6][i] = new Pawn(3, 'p', true);//creates white pawns
         }
 
         board[0][0] = new Rook(10, 'R', false);
@@ -236,6 +270,36 @@ public class Chess {
             }
         }
         return checkCounter;
+    }
+
+    private int alphaBeta(int maxDepth, int currentDepth, boolean isMax, int alpha, int beta, Node root){
+        if(currentDepth == maxDepth){
+            return root.getBoardScore();
+        }
+        //maximize
+        int value;
+        if(isMax){
+            value = Integer.MIN_VALUE;
+            for(Node n : root.getChildren()){
+                value = Math.max(value, alphaBeta(maxDepth, currentDepth + 1, false, alpha, beta, n));
+                if(value >= beta){
+                    break;
+                }
+                alpha = Math.max(alpha, value);
+            }
+        }
+        //minimize
+        else{
+            value = Integer.MAX_VALUE;
+            for(Node n : root.getChildren()){
+                value = Math.min(value, alphaBeta(maxDepth, currentDepth + 1, true, alpha, beta, n));
+                if(value <= alpha){
+                    break;
+                }
+                beta = Math.min(beta,value);
+            }
+        }
+        return value;
     }
 
     public static void main(String[] args) {
