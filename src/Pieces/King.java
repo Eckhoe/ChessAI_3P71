@@ -13,11 +13,13 @@ public class King extends Piece{
 		if(board[newYPos][newXPos].isWhite == this.isWhite && board[newYPos][newXPos].type != '-' || currPlayer.getIsWhite() != this.isWhite)
 			return false;
 
-		int xMove = Math.abs(xPos - newXPos);
-		int yMove = Math.abs(yPos - newYPos);
+		int xDist = xPos - newXPos;
+		int yDist = yPos - newYPos;
+		int xMove = Math.abs(xDist);
+		int yMove = Math.abs(yDist);
 
 		//this allows the king to move in one direction each way
-		if(xMove + yMove == 1)
+		if(xDist <= 1 && xDist >= -1 && yDist <= 1 && yDist >= -1)
 			return true;
 		return false;
 	}

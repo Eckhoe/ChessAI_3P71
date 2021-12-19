@@ -81,7 +81,7 @@ public class Chess {
                     printBoard();
                     checkGame(playerOne, playerTwo, playerOneKingCoordinate);
                     if (gameWon) {
-                        System.out.println("Player 2 Wins");
+                        System.out.println("You Win");
                         break;
                     }
                 }

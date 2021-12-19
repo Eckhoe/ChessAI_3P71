@@ -9,7 +9,7 @@ public class Node {
 
     Player currPlayer;
     Piece[][] board; //current board state
-    Piece [][] newBoard = copyBoard();
+
     int boardScore; //score of the current board
     ArrayList<Node> children;
     boolean isExpanded;
@@ -34,7 +34,7 @@ public class Node {
     private void generateMoves(Piece currPiece, int x, int y){
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board.length; j++) {
-                if(currPiece.makeMove(currPlayer,newBoard,x,y,j,i)){
+                if(currPiece.makeMove(currPlayer,board,x,y,j,i)){
                     children.add(new Node(editBoard(currPiece,x,y,j,i), currPlayer));
                 }
             }
@@ -42,6 +42,7 @@ public class Node {
     }
 
     private Piece[][] editBoard(Piece currPiece, int xPos, int yPos, int newXPos, int newYPos){
+        Piece [][] newBoard = copyBoard();
         newBoard[yPos][xPos] = new Empty(0, '-', false);//replaces the spot where the piece left
         newBoard[newYPos][newXPos] = currPiece;//replaces whatever was at the position with the new piece
         return newBoard;
